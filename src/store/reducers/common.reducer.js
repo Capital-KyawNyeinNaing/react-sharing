@@ -1,7 +1,7 @@
 import * as types from "../types";
 
 const initialState = {
-  openRedux: false,
+  openRedux_data: false,
 };
 
 const home = (state = initialState, action) => {
@@ -9,7 +9,7 @@ const home = (state = initialState, action) => {
     case "OPEN":
       return {
         ...state,
-        openRedux: action.payload,
+        openRedux_data: action.payload,
       };
     default:
       return state;

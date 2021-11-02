@@ -1,25 +1,80 @@
 import "./App.css";
-import React, { useEffect, createRef } from "react";
+import React, { useEffect, createRef, useState } from "react";
 import { FirstComponent } from "./components";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import SecondComponent from "./components/SecondComponent";
 import ThirdComponent from "./components/ThirdComponent";
-import { common } from "./store/actions/common.action";
+import { commonAction } from "./store/actions/common.action";
 
 const App = (props) => {
-  const { openRedux } = useSelector((state) => state.common); // reducer
+  const [user, setUser] = useState();
+  const { openRedux_data } = useSelector((state) => state.common); // reducer
   const dispatch = useDispatch();
 
   const handleClickOpen = () => {
-    dispatch(common("OPEN", !openRedux));
+    dispatch(commonAction("OPEN", !openRedux_data)); // action
   };
 
-  // useEffect(() => {
+  const add = (num, resolve, reject) => {
+    if (Array.isArray(num)) {
+      let result = num.reduce((a, b) => a + b);
+      resolve(result);
+    } else {
+      reject();
+    }
+  };
 
-  // }, [])
+  const addPromise = (num) => {
+    return new Promise((resolve, reject) => {
+      if (Array.isArray(num)) {
+        let result = num.reduce((a, b) => a + b);
+        resolve(result);
+      } else {
+        reject();
+      }
+    });
+  };
 
-  console.log(openRedux);
+  async function sum(num) {
+    try {
+      let result = await addPromise(num);
+      console.log(`Result: ${result}`);
+    } catch {
+      console.log("Something wrong");
+    }
+  }
+
+  sum(1);
+  console.log("object");
+
+  // addPromise([1, 2]).then(res => {
+  //   console.log(`Result: ${res}`)
+  // }).catch(() => {
+  //   console.log('Something wrong')
+  // })
+
+  // addPromise(1)
+  //   .then((a) => {
+  //     return a + 1;
+  //   })
+  //   .then((b) => {
+  //     return b + 1;
+  //   })
+  //   .then((res) => {
+  //     console.log(`Result: ${res}`);
+  //   })
+  //   .catch(() => {
+  //     console.log("Something wrong");
+  //   });
+
+  // add([1, 2], result => {
+  //   console.log(`Result: ${result}`)
+  // }, () => {
+  //   console.log('Something wrong')
+  // })
+
+  console.log(openRedux_data);
 
   const nameRef = createRef();
   const priceRef = createRef();
@@ -32,13 +87,18 @@ const App = (props) => {
     );
   };
 
-  const Home = () => (
-    <>
-      Home
-    </>
-  );
+  const Home = () => <>Home</>;
 
   const About = () => <div>About</div>;
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        setUser(json);
+      });
+  }, []);
 
   return (
     <>
@@ -48,8 +108,12 @@ const App = (props) => {
           age: 14,
         }}
       /> */}
-      <button onClick={handleClickOpen}>Click</button>
 
+      {user?.map((x) => (
+        <div>{x.name}</div>
+      ))}
+      <button onClick={handleClickOpen}>Click</button>
+      <div className="test">Test</div>
       <div>
         <label>Name</label>
         <br />

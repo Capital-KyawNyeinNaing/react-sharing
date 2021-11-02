@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const FirstComponent = (props) => {
-  const { openRedux } = useSelector((state) => state.common);
+  const { openRedux } = useSelector((state) => state.common); // redux reducer
 
   const { name, age } = props.data;
   const [open, setOpen] = useState(false);

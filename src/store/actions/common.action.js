@@ -1,4 +1,4 @@
-export const common = (type, payload) => {
+export const commonAction = (type, payload) => {
   return {
     type,
     payload,
