@@ -1,11 +1,13 @@
 import "./App.css";
 import React, { useEffect, createRef, useState } from "react";
+import styled from "styled-components";
 import { FirstComponent } from "./components";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import SecondComponent from "./components/SecondComponent";
 import ThirdComponent from "./components/ThirdComponent";
 import { commonAction } from "./store/actions/common.action";
+import { HomeStyled } from "./components/styledComponent/HomeStyle";
 
 const App = (props) => {
   const [user, setUser] = useState();
@@ -87,9 +89,20 @@ const App = (props) => {
     );
   };
 
-  const Home = () => <>Home</>;
+  const Home = ({ border }) => (
+    <>
+      <HomeStyled border={border}>
+        <div>
+          <span>width 100</span>
+        </div>
+      </HomeStyled>
+      <HomeStyled border={border} width="200">
+        <div className="width-200">width 200</div>
+      </HomeStyled>
+    </>
+  );
 
-  const About = () => <div>About</div>;
+  const About = () => <ThirdComponent />;
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -100,8 +113,14 @@ const App = (props) => {
       });
   }, []);
 
+  const styles = {
+    marginBottom: 30,
+  };
+
   return (
     <>
+      <div style={styles}></div>
+
       {/* <FirstComponent
         data={{
           name: "Name 1",
@@ -110,7 +129,7 @@ const App = (props) => {
       /> */}
 
       {user?.map((x) => (
-        <div>{x.name}</div>
+        <div key={x.id}>{x.name}</div>
       ))}
       <button onClick={handleClickOpen}>Click</button>
       <div className="test">Test</div>
@@ -142,7 +161,7 @@ const App = (props) => {
 
         <Switch>
           <Route path="/home">
-            <Home />
+            <Home border />
           </Route>
           <Route path="/about">
             <About />

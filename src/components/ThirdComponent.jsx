@@ -1,19 +1,18 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 
-const ThirdComponent = (props) => {
-  console.log("second >>", props);
+const MyContext = React.createContext("Hello React");
 
-  return (
-    <div>
-      <hr />
-      {props.data.map((value) => (
-        <div key={value.id}>
-          <div>{value.name}</div>
-          <div>{value.price}</div>
-        </div>
-      ))}
-    </div>
-  );
+const Title = (props) => {
+  const name = useContext(MyContext);
+  return <h1>{name}</h1>;
+};
+
+const Header = (props) => {
+  return <Title />;
+};
+
+const ThirdComponent = () => {
+  return <Header />;
 };
 
 export default ThirdComponent;
